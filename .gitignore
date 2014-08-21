@@ -1,1 +1,5 @@
 .vagrant
+*.swp
+*.swo
+*_lesson
+*_exercise

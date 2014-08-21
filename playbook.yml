@@ -1,0 +1,21 @@
+---
+- hosts: all
+  tasks:
+    - name: install apt packages
+      sudo: yes
+      apt: name={{ item }} state=latest
+      with_items:
+        - git
+        - golang-go
+        - python-dev
+        - libxml2-dev
+        - libxslt-dev
+
+    - name: install python
+      sudo: yes
+      pip: name={{ item }} state=latest
+      with_items:
+        - hexlet
+
+    - name: install nsinit
+      shell: go install github.com/dotcloud/docker/pkg/libcontainer/nsinit/nsinit
