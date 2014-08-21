@@ -22,4 +22,5 @@ RUN npm install -g tty.js
 
 EXPOSE 8080
 
-ONBUILD COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
