@@ -6,10 +6,12 @@
       apt: name={{ item }} state=latest
       with_items:
         - git
-        - golang-go
-        - python-dev
+        - golang
         - libxml2-dev
         - libxslt-dev
+        - python-dev
+        # - python-setuptools
+        - python-pip
 
     - name: install python
       sudo: yes
@@ -17,5 +19,4 @@
       with_items:
         - hexlet
 
-    - name: install nsinit
-      shell: go install github.com/dotcloud/docker/pkg/libcontainer/nsinit/nsinit
+    # - shell: docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter creates=/usr/local/bin/nsenter
