@@ -6,7 +6,6 @@
       apt: name={{ item }} state=latest
       with_items:
         - git
-        - golang
         - libxml2-dev
         - libxslt-dev
         - python-dev
