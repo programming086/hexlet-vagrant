@@ -24,3 +24,5 @@ EXPOSE 8080
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
+
+WORKDIR /root/exercise
