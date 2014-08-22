@@ -10,13 +10,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/trusty32"
 
   config.vm.provision "docker",
       images: ["mokevnin/hexlet-vagrant"]
 
+  # config.vm.provision "docker" do |d|
+  #   d.build_image "/vagrant"
+  # end
+
   config.vm.provision "ansible" do |ansible|
-      ansible.playbook = "playbook.yml"
+    ansible.playbook = "playbook.yml"
   end
 
   # Disable automatic box update checking. If you disable this, then
