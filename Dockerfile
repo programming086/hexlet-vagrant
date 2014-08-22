@@ -14,6 +14,8 @@ RUN mkdir -p /var/log/supervisor
 
 RUN apt-get install -y python-software-properties
 RUN apt-get install -y software-properties-common
+RUN apt-get install -y python-setuptools
+RUN easy_install pip
 
 RUN add-apt-repository -y ppa:chris-lea/node.js
 RUN apt-get update
