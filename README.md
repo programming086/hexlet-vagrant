@@ -1,6 +1,11 @@
-### install
+## install
 
-    git clone <this repo>
-    vagrant up
-    vagrant provision
-    vagrant ssh
+    git clone https://github.com/Hexlet/hexlet-vagrant.git
+    make build
+    make run
+
+    cd /vagrant/...
+
+## update
+
+    make update
