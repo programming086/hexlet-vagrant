@@ -8,6 +8,7 @@ CMD ["/usr/bin/supervisord"]
 RUN apt-get update
 
 RUN apt-get install -y build-essential
+RUN apt-get install -y git
 
 RUN apt-get install -y supervisor
 RUN mkdir -p /var/log/supervisor
