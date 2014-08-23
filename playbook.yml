@@ -3,7 +3,7 @@
   tasks:
     - name: install apt packages
       sudo: yes
-      apt: name={{ item }} state=latest
+      apt: name={{ item }} state=present
       with_items:
         - git
         - libxml2-dev
@@ -16,11 +16,9 @@
       pip: name={{ item }} state=latest
       with_items:
         - hexlet
-        # - docker-py
 
     - name: Add Docker repository key
       sudo: yes
-      # apt_key: url="https://get.docker.io/gpg" id="A88D21E9"
       apt_key: url="https://get.docker.io/gpg" state=present
 
     - name: Add Docker repository
@@ -33,7 +31,6 @@
     - name: Install Docker
       sudo: yes
       apt: pkg=lxc-docker-1.2.0 state=latest # TODO hold version
-      # notify: "Start Docker"
 
     - name: Add vagrant to docker group
       sudo: yes
@@ -43,7 +40,3 @@
       shell: docker pull mokevnin/hexlet-vagrant
 
     # - shell: docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter creates=/usr/local/bin/nsenter
-
-  # handlers:
-  #   - name: Start Docker
-  #     service: name=docker state=started
