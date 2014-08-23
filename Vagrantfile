@@ -1,6 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$script = <<SCRIPT
+  sudo groupadd docker > /dev/null 2>&1
+  sudo usermod -a -G docker vagrant > /dev/null 2>&1
+SCRIPT
+
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -10,17 +16,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu/trusty32"
+  config.vm.box = "ubuntu/trusty64"
 
-  config.vm.provision "docker",
-      images: ["mokevnin/hexlet-vagrant"]
+  # config.vm.provision "docker",
+  #     version: "1.2",
+  #     images: ["mokevnin/hexlet-vagrant"]
 
   # config.vm.provision "docker" do |d|
   #   d.build_image "/vagrant"
   # end
 
+  config.vm.provision "shell",
+      inline: $script
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yml"
+    # ansible.verbose = "vv"
   end
 
   # Disable automatic box update checking. If you disable this, then
