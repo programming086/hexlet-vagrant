@@ -9,4 +9,4 @@ upgrade:
 	git pull
 	vagrant provision
 
-.PHONY: test
+.PHONY: build run upgrade
