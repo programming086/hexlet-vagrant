@@ -26,6 +26,6 @@ remove: stop
 
 # CHECK RUNNING
 test:
-	sudo /vagrant/docker-enter $(CONTAINER_ID) /bin/bash -c 'cd /root/exercise && ./run'
+	sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -c 'cd /root/exercise && ./run'
 
 .PHONY: test build bash run stop
