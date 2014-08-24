@@ -1,10 +1,15 @@
 ---
 - hosts: all
   tasks:
+
+    - name: set locale
+      locale_gen: name=en_US.UTF-8 state=present
+
     - name: install apt packages
       sudo: yes
       apt: name={{ item }} state=present
       with_items:
+        - language-pack-en
         - git
         - libxml2-dev
         - libxslt-dev
