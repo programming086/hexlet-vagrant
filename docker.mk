@@ -16,7 +16,7 @@ bash:
 	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) /bin/bash
 
 run: remove
-	@ docker run -dt -v $(CURDIR)/:/root/exercise $(IMAGE_ID) > $(CONTAINER_ID_FILE) && echo "RUN"
+	@ docker run -p 8080:8080 -dt -v /vagrant/docker.mk:/vagrant/docker.mk -v $(CURDIR)/:/root/exercise $(IMAGE_ID) > $(CONTAINER_ID_FILE) && echo "RUN"
 
 stop:
 	@ docker kill $(CS) > /dev/null 2>&1; echo "STOP"
