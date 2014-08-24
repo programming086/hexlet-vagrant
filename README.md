@@ -8,4 +8,4 @@
 
 ## update
 
-    make update
+    make upgrade
