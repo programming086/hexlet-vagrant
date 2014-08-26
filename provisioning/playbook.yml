@@ -13,14 +13,19 @@
         - git
         - libxml2-dev
         - libxslt-dev
-        - python-dev
-        - python-pip
+        - ruby
+        - ruby-dev
+        # - python-dev
+        # - python-pip
 
-    - name: install python
+    - name: install gems
       sudo: yes
-      pip: name={{ item }} state=latest
+      gem: name={{ item }} state=latest user_install=no
       with_items:
+        - rake
+        - bundler
         - hexlet
+      tags: [ruby]
 
     - name: Add Docker repository key
       sudo: yes

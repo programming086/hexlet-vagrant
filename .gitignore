@@ -1,4 +1,7 @@
 .vagrant
 *.swp
 *.swo
-exercises/*.*
+exercises
+lessons
+hexlet
+hexlet-site
