@@ -49,4 +49,6 @@
     - name: download docker image
       shell: docker pull mokevnin/hexlet-vagrant
 
+    - lineinfile: dest=/home/vagrant/.bashrc line="cd /vagrant"
+
     # - shell: docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter creates=/usr/local/bin/nsenter
