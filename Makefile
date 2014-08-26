@@ -2,6 +2,12 @@ build:
 	vagrant up
 	vagrant provision
 
+clean:
+	vagrant halt
+	vagrant destroy
+
+rebuild: clean build
+
 run:
 	vagrant ssh
 
