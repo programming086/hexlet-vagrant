@@ -42,9 +42,10 @@
       sudo: yes
       apt: pkg=lxc-docker-1.2.0 state=latest # TODO hold version
 
-    - name: Add vagrant to docker group
+    # FIXME
+    - name: store docker images to shared folder
       sudo: yes
-      user: name={{ ansible_user_id }} groups=docker
+      mount: src=/var/lib/docker name=/vagrant/.docker opts=bind state=mounted fstype=ext4
 
     - name: download docker image
       shell: docker pull mokevnin/hexlet-vagrant
