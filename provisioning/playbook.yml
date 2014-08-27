@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- hosts: localhost
+  gather_facts: no
   tasks:
 
     - name: set locale
@@ -40,12 +41,15 @@
 
     - name: Install Docker
       sudo: yes
-      apt: pkg=lxc-docker-1.2.0 state=latest # TODO hold version
+      apt: pkg=lxc-docker-1.2.0 state=latest
 
-    # FIXME
-    - name: store docker images to shared folder
-      sudo: yes
-      mount: src=/var/lib/docker name=/vagrant/.docker opts=bind state=mounted fstype=ext4
+    # - name: change default docker dir
+    #   sudo: yes
+    #   lineinfile: dest=/etc/default/docker
+    #     regexp="^DOCKER_OPTS"
+    #     line='DOCKER_OPTS="-g /vagrant/.docker"'
+    #   notify:
+    #     - restart docker
 
     - name: download docker image
       shell: docker pull mokevnin/hexlet-vagrant
@@ -53,3 +57,8 @@
     - lineinfile: dest=/home/vagrant/.bashrc line="cd /vagrant"
 
     # - shell: docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter creates=/usr/local/bin/nsenter
+
+  handlers:
+    - name: restart docker
+      sudo: yes
+      service: name=docker state=restarted

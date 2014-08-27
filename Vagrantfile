@@ -1,9 +1,20 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$script = <<SCRIPT
+$base_script = <<SCRIPT
   sudo groupadd docker > /dev/null 2>&1
   sudo usermod -a -G docker vagrant > /dev/null 2>&1
+SCRIPT
+
+$script = <<SCRIPT
+  # >
+  sudo apt-get install software-properties-common
+  sudo apt-add-repository ppa:ansible/ansible
+  sudo apt-get update
+  sudo apt-get install ansible -y
+  # <
+
+  ansible-playbook -c local /vagrant/provisioning/playbook.yml
 SCRIPT
 
 
@@ -27,12 +38,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # end
 
   config.vm.provision "shell",
+      inline: $base_script
+
+  config.vm.provision "shell",
       inline: $script
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provisioning/playbook.yml"
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.playbook = "provisioning/playbook.yml"
     # ansible.verbose = "vv"
-  end
+  # end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

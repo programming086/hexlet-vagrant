@@ -4,7 +4,7 @@ build:
 
 clean:
 	vagrant halt
-	vagrant destroy
+	vagrant destroy -f
 
 rebuild: clean build
 
