@@ -9,13 +9,15 @@ clean:
 rebuild: clean build
 
 run:
+	vagrant up
 	vagrant ssh
 
-upgrade:
+pull:
 	git pull
-	vagrant provision
+
+upgrade: pull build
 
 dev_run:
 	vagrant ssh -- -R 3000:localhost:3000
 
-.PHONY: build run upgrade
+.PHONY: build run upgrade rebuild pull

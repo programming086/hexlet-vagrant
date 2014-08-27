@@ -13,6 +13,9 @@ RUN apt-get install -y git
 RUN apt-get install -y supervisor
 RUN mkdir -p /var/log/supervisor
 
+# RUN apt-get install ruby
+# RUN apt-get install ruby-dev
+
 RUN apt-get install -y python-software-properties
 RUN apt-get install -y software-properties-common
 RUN apt-get install -y python-setuptools
