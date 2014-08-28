@@ -6,7 +6,7 @@
     make build
     make run
 
-    # next step http://feedback.hexlet.io/knowledgebase
+    # next step http://feedback.hexlet.io/knowledgebase/articles/414482-setting-up-the-hexlet-environment
 
 ## update
 
