@@ -16,7 +16,7 @@ bash:
 	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) /bin/bash
 
 run: remove
-	@ docker run -p 8080:8080 -dt -v /vagrant/docker.mk:/vagrant/docker.mk -v $(CURDIR)/:/root/exercise $(IMAGE_ID) > $(CONTAINER_ID_FILE) && echo "RUN"
+	@ docker run -p 8080:8080 -dt -v $(CURDIR)/:/root/exercise $(IMAGE_ID) > $(CONTAINER_ID_FILE) && echo "RUN"
 
 stop:
 	@ docker kill $(CS) > /dev/null 2>&1; echo "STOP"
@@ -26,6 +26,6 @@ remove: stop
 
 # CHECK RUNNING
 test:
-	sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -c 'cd /root/exercise && ./run'
+	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -c 'cd /root/exercise && $(RUN_TESTS)'
 
 .PHONY: test build bash run stop
