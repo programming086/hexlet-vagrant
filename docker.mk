@@ -15,7 +15,7 @@ build: stop
 bash:
 	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) /bin/bash
 
-run: remove
+start: remove
 	@ docker run -p 8080:8080 -dt -v $(CURDIR)/:/root/exercise $(IMAGE_ID) > $(CONTAINER_ID_FILE) && echo "RUN"
 
 stop:
