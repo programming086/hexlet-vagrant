@@ -2,11 +2,12 @@
 
     git clone https://github.com/Hexlet/hexlet-vagrant.git
     cd hexlet-vagrant
+
     make build
     make run
 
-    cd /vagrant/...
+    # next step http://feedback.hexlet.io/knowledgebase
 
 ## update
 
-    make upgrade
+    make build

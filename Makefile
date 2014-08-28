@@ -1,4 +1,5 @@
 build:
+	git pull
 	vagrant up
 	vagrant provision
 
@@ -12,12 +13,7 @@ run:
 	vagrant up
 	vagrant ssh
 
-pull:
-	git pull
-
-upgrade: pull build
-
 dev_run:
 	vagrant ssh -- -R 3000:localhost:3000
 
-.PHONY: build run upgrade rebuild pull
+.PHONY: build run rebuild pull
