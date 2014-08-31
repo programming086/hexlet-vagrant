@@ -9,6 +9,8 @@ IMAGE_ID = $(shell cat $(IMAGE_ID_FILE))
 CONTAINER_ID_FILE = /var/tmp/docker_container_id
 CONTAINER_ID = $(shell cat $(CONTAINER_ID_FILE))
 
+EXEC_TESTS = /bin/bash -c 'cd /root/exercise && $(RUN_TESTS)'
+
 build: stop
 	docker build -t $(NEW_T) . && echo $(NEW_T) > $(IMAGE_ID_FILE)
 
@@ -26,6 +28,9 @@ remove: stop
 
 # CHECK RUNNING
 test:
-	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -c 'cd /root/exercise && $(RUN_TESTS)'
+	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) $(EXEC_TESTS)
+
+browser_test:
+	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) $(EXEC_TESTS)
 
 .PHONY: test build bash run stop

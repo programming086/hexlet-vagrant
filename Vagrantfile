@@ -29,6 +29,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
 
+  # config.ssh.pty = true
+
   # config.vm.provision "docker",
   #     version: "1.2",
   #     images: ["mokevnin/hexlet-vagrant"]

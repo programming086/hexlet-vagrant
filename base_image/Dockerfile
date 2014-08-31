@@ -25,7 +25,6 @@ RUN easy_install pip
 RUN add-apt-repository -y ppa:chris-lea/node.js
 RUN apt-get update
 RUN apt-get install -y nodejs
-RUN npm install -g tty.js
 
 # EXPOSE 8080
 

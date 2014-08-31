@@ -6,16 +6,33 @@
     - name: set locale
       locale_gen: name=en_US.UTF-8 state=present
 
+    - name: Add Docker repository key
+      sudo: yes
+      apt_key: url="https://get.docker.io/gpg" state=present
+
+    - name: Add repositories
+      sudo: yes
+      apt_repository: repo="{{ item }}" state=present
+      with_items:
+        - 'ppa:chris-lea/node.js'
+        - 'deb http://get.docker.io/ubuntu docker main'
+
+    - name: update apt
+      apt: update_cache=yes
+
     - name: install apt packages
       sudo: yes
       apt: name={{ item }} state=present
       with_items:
+        - build-essential
         - language-pack-en
         - git
         - libxml2-dev
         - libxslt-dev
         - ruby
         - ruby-dev
+        - lxc-docker-1.2.0
+        - nodejs
         # - python-dev
         # - python-pip
 
@@ -28,28 +45,15 @@
         - hexlet
       tags: [ruby]
 
-    - name: Add Docker repository key
-      sudo: yes
-      apt_key: url="https://get.docker.io/gpg" state=present
-
-    - name: Add Docker repository
-      sudo: yes
-      apt_repository:
-        repo='deb http://get.docker.io/ubuntu docker main'
-        state=present
-        update_cache=yes
-
-    - name: Install Docker
-      sudo: yes
-      apt: pkg=lxc-docker-1.2.0 state=latest
-
     # - name: change default docker dir
     #   sudo: yes
     #   lineinfile: dest=/etc/default/docker
     #     regexp="^DOCKER_OPTS"
-    #     line='DOCKER_OPTS="-g /vagrant/.docker"'
+    #     line='DOCKER_OPTS="--storage-driver=vfs -g /vagrant/.docker"'
     #   notify:
     #     - restart docker
+
+    # - meta: flush_handlers
 
     - name: download docker image
       shell: docker pull mokevnin/hexlet-vagrant
@@ -58,7 +62,7 @@
 
     # - shell: docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter creates=/usr/local/bin/nsenter
 
-  handlers:
-    - name: restart docker
-      sudo: yes
-      service: name=docker state=restarted
+  # handlers:
+  #   - name: restart docker
+  #     sudo: yes
+  #     service: name=docker state=restarted
