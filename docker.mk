@@ -1,36 +1,34 @@
-SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
-
-NEW_T := $(shell cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
+ID := $(shell basename $(CURDIR))
+CONTAINER_ID := $(addsuffix _container, $(ID))
+IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
-
-IMAGE_ID_FILE = /var/tmp/docker_image_id
-IMAGE_ID = $(shell cat $(IMAGE_ID_FILE))
-
-CONTAINER_ID_FILE = /var/tmp/docker_container_id
-CONTAINER_ID = $(shell cat $(CONTAINER_ID_FILE))
 
 EXEC_TESTS = /bin/bash -c 'cd /root/exercise && $(RUN_TESTS)'
 
 build: stop
-	docker build -t $(NEW_T) . && echo $(NEW_T) > $(IMAGE_ID_FILE)
+	docker build -t $(IMAGE_ID) .
 
 bash:
 	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) /bin/bash
 
-start: remove
-	@ docker run -p 8080:8080 -dt -v $(CURDIR)/:/root/exercise $(IMAGE_ID) > $(CONTAINER_ID_FILE) && echo "RUN"
+start: stop
+ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
+	@ echo "Please, run 'make build' before 'make start'";
+else
+	@ docker run -p 8080:8080 -dt -v $(CURDIR)/:/root/exercise --name $(CONTAINER_ID) $(IMAGE_ID) > /dev/null 2>&1
+endif
+
+# stop:
+# 	@ docker stop $(CS) > /dev/null 2>&1; echo ""
 
 stop:
-	@ docker kill $(CS) > /dev/null 2>&1; echo "STOP"
+	@ docker rm -f $(CS) > /dev/null 2>&1; echo ""
 
-remove: stop
-	@ docker rm $(CS) > /dev/null 2>&1; echo "REMOVE"
-
-# CHECK RUNNING
 test:
+ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
+	@ echo "Please, run 'make start' before 'make test'";
+else
 	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) $(EXEC_TESTS)
-
-browser_test:
-	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) $(EXEC_TESTS)
+endif
 
 .PHONY: test build bash run stop
