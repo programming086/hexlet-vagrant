@@ -24,20 +24,32 @@ RUN apt-get install -y python-setuptools
 RUN easy_install pip
 
 RUN add-apt-repository -y ppa:chris-lea/node.js
+RUN add-apt-repository -y ppa:nginx/stable
 
 RUN apt-get update
 
 RUN apt-get install -y nodejs
+# FIXME set one worker
+RUN apt-get install -y nginx
+
+RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+# RUN chown -R www-data:www-data /var/lib/nginx
+
+ENV USER root
+
+RUN npm install -g codebox
 
 RUN mkdir -p /root/.ssh
 ADD authorized_keys /root/.ssh/authorized_keys
 
-# EXPOSE 8080
 EXPOSE 22
+EXPOSE 80
+EXPOSE 8000
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 
 WORKDIR /root/exercise
 
-
+COPY nginx_codebox.conf /etc/nginx/conf.d/codebox.conf
+# RUN echo 'root:screencast' | chpasswd
