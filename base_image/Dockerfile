@@ -37,8 +37,6 @@ RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
 
 ENV USER root
 
-RUN npm install -g codebox
-
 RUN mkdir -p /root/.ssh
 ADD authorized_keys /root/.ssh/authorized_keys
 
@@ -46,10 +44,13 @@ EXPOSE 22
 EXPOSE 80
 EXPOSE 8000
 
+RUN npm install -g hexlet-ide
+
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# RUN echo 'root:screencast' | chpasswd
 
 WORKDIR /root/exercise
 
-COPY nginx_codebox.conf /etc/nginx/conf.d/codebox.conf
-# RUN echo 'root:screencast' | chpasswd
+ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
+ONBUILD RUN npm update -g hexlet-ide
