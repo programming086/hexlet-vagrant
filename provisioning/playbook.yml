@@ -57,7 +57,7 @@
     # - meta: flush_handlers
 
     - name: download docker image
-      shell: docker pull mokevnin/hexlet-vagrant
+      shell: docker pull hexlet/hexlet-vagrant:stable
 
     - lineinfile: dest=/home/vagrant/.bashrc line="cd /vagrant"
 
