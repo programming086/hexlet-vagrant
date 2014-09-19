@@ -44,13 +44,14 @@ EXPOSE 22
 EXPOSE 80
 EXPOSE 8000
 
+WORKDIR /root/exercise
+
 RUN npm install -g hexlet-ide
+
+# RUN npm update -g hexlet-ide
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # RUN echo 'root:screencast' | chpasswd
 
-WORKDIR /root/exercise
-
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
-ONBUILD RUN npm update -g hexlet-ide
