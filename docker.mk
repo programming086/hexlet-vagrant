@@ -13,7 +13,7 @@ bash:
 
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
-	@ echo "Please, run 'make build' before 'make start'";
+	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
 	@ docker run -p 8080:8080 -dt -v $(CURDIR)/:/root/exercise --name $(CONTAINER_ID) $(IMAGE_ID) > /dev/null 2>&1
 endif
@@ -26,7 +26,7 @@ stop:
 
 test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
-	@ echo "Please, run 'make start' before 'make test'";
+	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
 	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) $(EXEC_TESTS)
 endif
