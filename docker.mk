@@ -3,32 +3,30 @@ CONTAINER_ID := $(addsuffix _container, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 
-EXEC_TESTS = /bin/bash -c 'cd /root/exercise && $(RUN_TESTS)'
-
 build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	@ docker run -it -v $(CURDIR)/:/root/exercise $(IMAGE_ID) /bin/bash
+	@ docker run -it  $(IMAGE_ID) /bin/bash
 
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	@ docker run -p 8080:8080 -dt -v $(CURDIR)/:/root/exercise --name $(CONTAINER_ID) $(IMAGE_ID) > /dev/null 2>&1
+	docker run -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
 # 	@ docker stop $(CS) > /dev/null 2>&1; echo ""
 
 stop:
-	@ docker rm -f $(CS) > /dev/null 2>&1; echo ""
+	docker rm -f $(CS) > /dev/null 2>&1; echo ""
 
 test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) $(EXEC_TESTS)
+	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
 endif
 
 .PHONY: test build bash run stop
