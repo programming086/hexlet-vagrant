@@ -1,8 +1,10 @@
 FROM       node:0.10.32
 MAINTAINER hexlet
 
-RUN apt-get install -y supervisor
+ENV USER root
+ENV HOME /root
 
+RUN apt-get install -y supervisor python-pip ruby
 # RUN apt-get update
 
 # RUN apt-get install -y build-essential
@@ -31,10 +33,6 @@ RUN apt-get install -y supervisor
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # RUN echo 'root:screencast' | chpasswd
-ENV USER root
-ENV HOME /root
-
-EXPOSE 22
 EXPOSE 80
 EXPOSE 8000
 
