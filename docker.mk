@@ -7,13 +7,16 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	@ docker run -it  $(IMAGE_ID) /bin/bash
+	@ docker run -it  $(IMAGE_ID) /bin/bash -l
+
+attach:
+	sudo /vagrant/bin/docker-eneter $(CONTAINER_ID) /bin/bash -l
 
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	docker run -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
+	@ docker run -d -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
