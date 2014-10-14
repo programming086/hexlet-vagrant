@@ -37,6 +37,6 @@ EXPOSE 80
 EXPOSE 8000
 
 WORKDIR /usr/src/app
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-n"]
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
