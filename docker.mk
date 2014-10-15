@@ -10,7 +10,7 @@ bash:
 	@ docker run -it  $(IMAGE_ID) /bin/bash -l
 
 attach:
-	sudo /vagrant/bin/docker-eneter $(CONTAINER_ID) /bin/bash -l
+	sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -l
 
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
