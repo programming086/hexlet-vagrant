@@ -10,7 +10,7 @@ bash:
 	@ docker run -it  $(IMAGE_ID) /bin/bash -l
 
 attach:
-	sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -l
+	@ docker exec -it $(CONTAINER_ID) /bin/bash -l
 
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
@@ -23,13 +23,13 @@ endif
 # 	@ docker stop $(CS) > /dev/null 2>&1; echo ""
 
 stop:
-	docker rm -f $(CS) > /dev/null 2>&1; echo ""
+	@ docker rm -f $(CS) > /dev/null 2>&1; echo ""
 
 test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	@ sudo /vagrant/bin/docker-enter $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
+	@ docker exec $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
 endif
 
 .PHONY: test build bash run stop
