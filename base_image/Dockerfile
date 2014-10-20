@@ -4,7 +4,7 @@ MAINTAINER hexlet
 ENV USER root
 ENV HOME /root
 
-RUN apt-get install -y supervisor python-pip ruby
+RUN apt-get install -y supervisor python-pip ruby ruby-dev
 # RUN apt-get update
 
 # RUN apt-get install -y build-essential
