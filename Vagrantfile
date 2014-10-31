@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.ssh.pty = true
 
   config.vm.provision 'docker',
-      version: '1.3.0',
+      version: '1.3.1',
       images: ['hexlet/hexlet-vagrant']
 
   # Create a forwarded port mapping which allows access to a specific port
