@@ -7,16 +7,16 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	@ docker run -it  $(IMAGE_ID) /bin/bash -l
+	docker run -it  $(IMAGE_ID) /bin/bash -l
 
 attach:
-	@ docker exec -it $(CONTAINER_ID) /bin/bash -l
+	docker exec -it $(CONTAINER_ID) /bin/bash -l
 
 start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	@ docker run -d -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
+	docker run -d -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
@@ -29,7 +29,7 @@ test:
 ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
-	@ docker exec $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
+	docker exec $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
 endif
 
 .PHONY: test build bash run stop
