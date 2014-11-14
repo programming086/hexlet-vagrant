@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y supervisor python-pip ruby ruby-dev
 
 # RUN npm install -g hexlet-ide
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /etc/supervisor/supervisord.conf
 # RUN echo 'root:screencast' | chpasswd
 EXPOSE 80
 EXPOSE 8000
@@ -41,3 +41,5 @@ CMD ["/usr/bin/supervisord", "-n"]
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 ONBUILD RUN apt-get update
+
+ENV TERM xterm

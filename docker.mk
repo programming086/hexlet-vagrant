@@ -7,7 +7,7 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run -it  $(IMAGE_ID) /bin/bash -l
+	docker run -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -l
 
 attach:
 	docker exec -it $(CONTAINER_ID) /bin/bash -l
