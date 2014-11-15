@@ -39,7 +39,7 @@ EXPOSE 8000
 WORKDIR /usr/src/app
 CMD ["/usr/bin/supervisord", "-n"]
 
-ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 ONBUILD RUN apt-get update
+ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 
 ENV TERM xterm
