@@ -7,7 +7,7 @@ build: stop
 	docker build -t $(IMAGE_ID) .
 
 bash:
-	docker run --dns=127.0.0.1 -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -l
+	docker run -it -v $(CURDIR)/exercise/:/usr/src/app $(IMAGE_ID) /bin/bash -l
 
 attach:
 	docker exec -it $(CONTAINER_ID) /bin/bash -l
@@ -16,7 +16,7 @@ start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	docker run --dns=127.0.0.1 -d -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
+	docker run -d -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
