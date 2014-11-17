@@ -1,5 +1,6 @@
 ID := $(shell basename $(CURDIR))
 CONTAINER_ID := $(addsuffix _container, $(ID))
+CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 
@@ -30,6 +31,20 @@ ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
 else
 	docker exec $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
+endif
+
+start_internal: stop
+ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
+	@ echo "Please, run 'make build'" >&2; exit 1;
+else
+	docker run -d -t -v $(CURDIR)/exercise_internal:/exercise_internal --name $(CONTAINER_ID_INTERNAL) $(IMAGE_ID)
+endif
+
+test_internal:
+ifeq ([], $(shell docker inspect $(CONTAINER_ID_INTERNAL) 2> /dev/null))
+	@ echo "Please, run 'make start_internal'" >&2; exit 1;
+else
+	docker exec $(CONTAINER_ID_INTERNAL) /bin/bash -l -c 'cd /exercise_internal && make test'
 endif
 
 .PHONY: test build bash run stop

@@ -33,13 +33,14 @@ RUN apt-get update && apt-get install -y supervisor python-pip ruby ruby-dev
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 # RUN echo 'root:screencast' | chpasswd
-EXPOSE 80
-EXPOSE 8000
+# EXPOSE 80
+# EXPOSE 8000
 
 WORKDIR /usr/src/app
 CMD ["/usr/bin/supervisord", "-n"]
 
 ONBUILD RUN apt-get update
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
+# ONBUILD ADD exercise /usr/src/app
 
 ENV TERM xterm
