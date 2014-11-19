@@ -4,7 +4,9 @@ MAINTAINER hexlet
 ENV USER root
 ENV HOME /root
 
-RUN apt-get update && apt-get install -y supervisor python-pip ruby ruby-dev
+RUN apt-get update && apt-get install -y supervisor python-pip ruby ruby-dev locales && \
+    localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
+    update-locale LC_ALL=en_US.UTF-8
 # RUN apt-get update
 
 # RUN apt-get install -y build-essential
