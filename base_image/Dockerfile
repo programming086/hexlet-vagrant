@@ -41,7 +41,6 @@ COPY supervisord.conf /etc/supervisor/supervisord.conf
 WORKDIR /usr/src/app
 CMD ["/usr/bin/supervisord", "-n"]
 
-ONBUILD RUN apt-get update
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
 
