@@ -4,17 +4,17 @@ MAINTAINER hexlet
 ENV USER root
 ENV HOME /root
 
-# > RUBY PYTHON
-RUN apt-get update && apt-get install -y supervisor python-pip ruby ruby-dev locales
-RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
-    update-locale LC_ALL=en_US.UTF-8
-# <
-
 # > RACKET
 ENV RACKET_VERSION 6.1.1
 ADD http://mirror.racket-lang.org/installers/$RACKET_VERSION/racket-minimal-$RACKET_VERSION-x86_64-linux-ubuntu-precise.sh racket.sh
 RUN echo "yes\n2\n" | /bin/bash racket.sh && rm racket.sh
 RUN raco pkg install --auto rackunit
+# <
+
+# > RUBY PYTHON ERLANG
+RUN apt-get update && apt-get install -y supervisor python-pip ruby ruby-dev erlang locales
+RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && \
+    update-locale LC_ALL=en_US.UTF-8
 # <
 
 # RUN apt-get update
