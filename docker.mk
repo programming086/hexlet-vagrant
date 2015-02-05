@@ -4,6 +4,13 @@ CONTAINER_ID_INTERNAL := $(addsuffix _container_internal, $(ID))
 IMAGE_ID := $(addsuffix _image, $(ID))
 CS = $(shell docker ps -a -q)
 
+test:
+ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
+	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
+else
+	docker exec -it $(CONTAINER_ID) make test -C /usr/src/app
+endif
+
 build: stop
 	docker build -t $(IMAGE_ID) .
 
@@ -25,13 +32,6 @@ endif
 
 stop:
 	@ docker rm -f $(CS) > /dev/null 2>&1; echo ""
-
-test:
-ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
-	@ echo "Please, run 'make start' before 'make test'" >&2; exit 1;
-else
-	docker exec $(CONTAINER_ID) /bin/bash -l -c 'cd /usr/src/app && make test'
-endif
 
 start_internal: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
