@@ -24,7 +24,8 @@ start: stop
 ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
 	@ echo "Please, run 'make build' before 'make start'" >&2; exit 1;
 else
-	docker run -d -p 8000:8000 -t -v $(CURDIR)/exercise/:/usr/src/app --name $(CONTAINER_ID) $(IMAGE_ID)
+	docker run -d -t -v $(CURDIR)/exercise/:/usr/src/app -v $(CURDIR)/exercise_internal:/exercise_internal \
+		-p 8000:8000 --name $(CONTAINER_ID) $(IMAGE_ID)
 endif
 
 # stop:
@@ -33,18 +34,18 @@ endif
 stop:
 	@ docker rm -f $(CS) > /dev/null 2>&1; echo ""
 
-start_internal: stop
-ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
-	@ echo "Please, run 'make build'" >&2; exit 1;
-else
-	docker run -d -t -v $(CURDIR)/exercise_internal:/exercise_internal --name $(CONTAINER_ID_INTERNAL) $(IMAGE_ID)
-endif
+# start_internal: stop
+# ifeq ([], $(shell docker inspect $(IMAGE_ID) 2> /dev/null))
+# 	@ echo "Please, run 'make build'" >&2; exit 1;
+# else
+# 	docker run -d -t -v $(CURDIR)/exercise_internal:/exercise_internal --name $(CONTAINER_ID_INTERNAL) $(IMAGE_ID)
+# endif
 
 test_internal:
-ifeq ([], $(shell docker inspect $(CONTAINER_ID_INTERNAL) 2> /dev/null))
+ifeq ([], $(shell docker inspect $(CONTAINER_ID) 2> /dev/null))
 	@ echo "Please, run 'make start_internal'" >&2; exit 1;
 else
-	docker exec $(CONTAINER_ID_INTERNAL) /bin/bash -l -c 'cd /exercise_internal && make test'
+	docker exec $(CONTAINER_ID) make test -C /exercise_internal
 endif
 
 .PHONY: test build bash run stop
