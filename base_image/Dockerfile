@@ -4,8 +4,7 @@ MAINTAINER hexlet
 ENV USER root
 ENV HOME /root
 
-RUN apt-get update && apt-get install -y locales
-RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 && update-locale LC_ALL=en_US.UTF-8
+RUN apt-get update && apt-get install -y
 
 # > JAVA
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
@@ -13,6 +12,22 @@ RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main"
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
 RUN apt-get update && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 # <
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && \
+    apt-get install -y locales && \
+    dpkg-reconfigure locales && \
+    locale-gen C.UTF-8 && \
+    /usr/sbin/update-locale LANG=C.UTF-8
+
+RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && \
+  locale-gen
+
+# Set default locale for the environment
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
 
 # > RACKET
 ENV RACKET_VERSION 6.1.1
