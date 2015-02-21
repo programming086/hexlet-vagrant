@@ -4,8 +4,6 @@ MAINTAINER hexlet
 ENV USER root
 ENV HOME /root
 
-RUN apt-get update && apt-get install -y
-
 # > JAVA
 RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
 RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
@@ -66,6 +64,8 @@ RUN apt-get update && apt-get install -y supervisor python-pip python-dev ruby r
 
 
 # RUN npm install -g hexlet-ide
+
+VOLUME /tmp /var/tmp /usr/tmp
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 # RUN echo 'root:screencast' | chpasswd
