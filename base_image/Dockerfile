@@ -39,6 +39,10 @@ RUN raco pkg install --auto rackunit
 RUN apt-get update && apt-get install -y supervisor python-pip python-dev ruby ruby-dev erlang ca-certificates
 # <
 
+ENV PHANTOMJS_VERSION 1.9.7
+RUN wget --no-check-certificate -q -O - https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 | tar xjC /opt
+RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
+
 # RUN apt-get update
 
 # RUN apt-get install -y build-essential
