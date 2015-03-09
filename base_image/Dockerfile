@@ -56,6 +56,10 @@ CMD ["/usr/bin/supervisord", "-n"]
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
 
+ENV PYTHONDONTWRITEBYTECODE true
+
 ENV TERM xterm
 ENV USER root
 ENV HOME /root
+
+COPY npmrc /root/.npmrc
