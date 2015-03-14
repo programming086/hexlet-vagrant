@@ -35,7 +35,9 @@ RUN apt-install clojure1.4
 
 RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-install nodejs
-VOLUME /user/.npmrc
+RUN mkdir /home/user/.npm
+RUN chown user:user /home/user/.npm
+VOLUME /home/user/.npm
 
 RUN apt-install racket
 RUN raco pkg install --deps force --scope installation rackunit
