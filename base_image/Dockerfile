@@ -33,6 +33,8 @@ RUN apt-install perl
 RUN apt-install clojure1.4
 # RUN apt-install r-base
 
+RUN useradd -ms /bin/bash user
+
 RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-install nodejs
 RUN mkdir /home/user/.npm
@@ -62,5 +64,3 @@ ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 ENV PYTHONDONTWRITEBYTECODE true
 
 ENV TERM xterm
-
-RUN useradd -ms /bin/bash user
