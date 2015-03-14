@@ -33,8 +33,8 @@ RUN apt-install perl
 RUN apt-install clojure1.4
 # RUN apt-install r-base
 
-RUN apt-install npm && \
-    ln -s /usr/bin/nodejs /usr/bin/node
+RUN curl -sL https://deb.nodesource.com/setup | bash -
+RUN apt-install nodejs
 VOLUME /user/.npmrc
 
 RUN apt-install racket
