@@ -35,6 +35,7 @@ RUN apt-install clojure1.4
 
 RUN apt-install npm && \
     ln -s /usr/bin/nodejs /usr/bin/node
+VOLUME /user/.npmrc
 
 RUN apt-install racket
 RUN raco pkg install --deps force --scope installation rackunit
@@ -44,7 +45,7 @@ ENV PHANTOMJS_VERSION 1.9.7
 RUN wget --no-check-certificate -q -O - https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 | tar xjC /opt
 RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
 
-RUN apt-install make
+RUN apt-install make vim
 
 VOLUME /tmp /var/tmp /usr/tmp
 
@@ -59,7 +60,5 @@ ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 ENV PYTHONDONTWRITEBYTECODE true
 
 ENV TERM xterm
-ENV USER root
-ENV HOME /root
 
-COPY npmrc /root/.npmrc
+RUN useradd -ms /bin/bash user
