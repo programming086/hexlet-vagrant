@@ -1,81 +1,66 @@
-FROM       node:0.10.32
+FROM java:openjdk-8-jdk
 MAINTAINER hexlet
-
-ENV USER root
-ENV HOME /root
-
-# > JAVA
-RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
-RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" | tee -a /etc/apt/sources.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-RUN apt-get update && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-  apt-get install -y oracle-java8-installer ca-certificates
-# <
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \
-    apt-get install -y locales && \
+COPY scripts/apt-install /bin/apt-install
+RUN chmod +x /bin/apt-install
+
+RUN apt-install apt-utils
+
+RUN apt-install locales && \
     dpkg-reconfigure locales && \
     locale-gen C.UTF-8 && \
     /usr/sbin/update-locale LANG=C.UTF-8
 
-RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && \
-  locale-gen
+RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && locale-gen
 
 # Set default locale for the environment
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
-# > RACKET
-ENV RACKET_VERSION 6.1.1
-ADD http://mirror.racket-lang.org/installers/$RACKET_VERSION/racket-minimal-$RACKET_VERSION-x86_64-linux-ubuntu-precise.sh racket.sh
-RUN echo "yes\n2\n" | /bin/bash racket.sh && rm racket.sh
-RUN raco pkg install --auto rackunit
-# <
+RUN apt-install supervisor
 
-# > RUBY PYTHON ERLANG JAVA
-RUN apt-get update && apt-get install -y supervisor python-pip python-dev ruby ruby-dev erlang ca-certificates
-# <
+RUN apt-install python-pip python-dev
+RUN apt-install ruby ruby-dev
+RUN apt-install erlang
+RUN apt-install scala
+RUN apt-install php5 php5-dev
+RUN apt-install golang
+RUN apt-install ghc
+RUN apt-install perl
+RUN apt-install clojure1.4
+# RUN apt-install r-base
 
-# RUN apt-get update
+RUN useradd -ms /bin/bash user
 
-# RUN apt-get install -y build-essential
-# RUN apt-get install -y git curl wget
-# RUN locale-gen en_US en_US.UTF-8
+RUN curl -sL https://deb.nodesource.com/setup | bash -
+RUN apt-install nodejs
+RUN mkdir /home/user/.npm
+RUN chown user:user /home/user/.npm
+VOLUME /home/user/.npm
 
-# RUN mkdir -p /var/log/supervisor
+RUN apt-install racket
+RUN raco pkg install --deps force --scope installation rackunit
 
-# RUN apt-get install ruby
-# RUN apt-get install ruby-dev
+RUN apt-install bzip2
+ENV PHANTOMJS_VERSION 1.9.7
+RUN wget --no-check-certificate -q -O - https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 | tar xjC /opt
+RUN ln -s /opt/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin/phantomjs /usr/bin/phantomjs
 
-# RUN apt-get install -y python-software-properties
-# RUN apt-get install -y software-properties-common
-# RUN apt-get install -y python-setuptools
-# RUN easy_install pip
-
-# RUN add-apt-repository -y ppa:chris-lea/node.js
-
-# RUN apt-get update
-
-# RUN apt-get install -y nodejs
-# FIXME set one worker
-
-
-# RUN npm install -g hexlet-ide
+RUN apt-install make vim
 
 VOLUME /tmp /var/tmp /usr/tmp
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
-# RUN echo 'root:screencast' | chpasswd
-# EXPOSE 80
-# EXPOSE 8000
 
 WORKDIR /usr/src/app
 CMD ["/usr/bin/supervisord", "-n"]
 
 ONBUILD COPY services.conf /etc/supervisor/conf.d/services.conf
 # ONBUILD ADD exercise /usr/src/app
+
+ENV PYTHONDONTWRITEBYTECODE true
 
 ENV TERM xterm

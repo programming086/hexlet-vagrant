@@ -2,7 +2,7 @@ build:
 	docker build -t hexlet/hexlet-vagrant .
 
 run:
-	docker run --read-only -p 8000:8000 hexlet/hexlet-vagrant
+	docker run -it --read-only -p 8000:8000 hexlet/hexlet-vagrant /bin/bash
 
 publish:
 	docker push hexlet/hexlet-vagrant
